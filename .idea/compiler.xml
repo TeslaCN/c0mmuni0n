@@ -9,8 +9,8 @@
         <module name="c0mmuni0n" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="c0mmuni0n" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="c0mmuni0n" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
