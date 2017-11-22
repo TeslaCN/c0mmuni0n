@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ltd.scau.c0mmuni0n.dao.mybatis.mapper.UsersMapper">
-  <resultMap id="BaseResultMap" type="ltd.scau.c0mmuni0n.dao.mybatis.po.Users">
-    <id column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="enabled" jdbcType="BIT" property="enabled" />
-    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+<mapper namespace="ltd.scau.c0mmuni0n.dao.mybatis.mapper.KeywordMapper">
+  <resultMap id="BaseResultMap" type="ltd.scau.c0mmuni0n.dao.mybatis.po.Keyword">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,15 +64,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    username, password, enabled, nickname
+    id, value
   </sql>
-  <select id="selectByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.UsersExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.KeywordExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from users
+    from keyword
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -82,79 +80,59 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from users
-    where username = #{username,jdbcType=VARCHAR}
+    from keyword
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from users
-    where username = #{username,jdbcType=VARCHAR}
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from keyword
+    where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.UsersExample">
-    delete from users
+  <delete id="deleteByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.KeywordExample">
+    delete from keyword
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Users">
-    insert into users (username, password, enabled, 
-      nickname)
-    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, 
-      #{nickname,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Keyword" keyProperty="id" useGeneratedKeys="true">
+    insert into keyword (id, value)
+    values (#{id,jdbcType=BIGINT}, #{value,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Users">
-    insert into users
+  <insert id="insertSelective" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Keyword" useGeneratedKeys="true" keyProperty="id">
+    insert into keyword
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="username != null">
-        username,
+      <if test="id != null">
+        id,
       </if>
-      <if test="password != null">
-        password,
-      </if>
-      <if test="enabled != null">
-        enabled,
-      </if>
-      <if test="nickname != null">
-        nickname,
+      <if test="value != null">
+        value,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="enabled != null">
-        #{enabled,jdbcType=BIT},
-      </if>
-      <if test="nickname != null">
-        #{nickname,jdbcType=VARCHAR},
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.UsersExample" resultType="java.lang.Long">
-    select count(*) from users
+  <select id="countByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.KeywordExample" resultType="java.lang.Long">
+    select count(*) from keyword
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update users
+    update keyword
     <set>
-      <if test="record.username != null">
-        username = #{record.username,jdbcType=VARCHAR},
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.password != null">
-        password = #{record.password,jdbcType=VARCHAR},
-      </if>
-      <if test="record.enabled != null">
-        enabled = #{record.enabled,jdbcType=BIT},
-      </if>
-      <if test="record.nickname != null">
-        nickname = #{record.nickname,jdbcType=VARCHAR},
+      <if test="record.value != null">
+        value = #{record.value,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -162,35 +140,25 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update users
-    set username = #{record.username,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      enabled = #{record.enabled,jdbcType=BIT},
-      nickname = #{record.nickname,jdbcType=VARCHAR}
+    update keyword
+    set id = #{record.id,jdbcType=BIGINT},
+      value = #{record.value,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Users">
-    update users
+  <update id="updateByPrimaryKeySelective" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Keyword">
+    update keyword
     <set>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="enabled != null">
-        enabled = #{enabled,jdbcType=BIT},
-      </if>
-      <if test="nickname != null">
-        nickname = #{nickname,jdbcType=VARCHAR},
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
       </if>
     </set>
-    where username = #{username,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Users">
-    update users
-    set password = #{password,jdbcType=VARCHAR},
-      enabled = #{enabled,jdbcType=BIT},
-      nickname = #{nickname,jdbcType=VARCHAR}
-    where username = #{username,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Keyword">
+    update keyword
+    set value = #{value,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

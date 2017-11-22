@@ -1,21 +1,29 @@
 package ltd.scau.c0mmuni0n.dao.mybatis.po;
 
-import java.util.Date;
-
 public class Resource {
-    private Integer id;
+    private Long id;
 
     private String path;
 
+    private String name;
+
     private String username;
 
-    private Date create;
+    private Long uploadtime;
 
-    public Integer getId() {
+    private Long size;
+
+    private Long type;
+
+    private Byte disable;
+
+    private Long clicked;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -27,6 +35,14 @@ public class Resource {
         this.path = path == null ? null : path.trim();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
     public String getUsername() {
         return username;
     }
@@ -35,11 +51,43 @@ public class Resource {
         this.username = username == null ? null : username.trim();
     }
 
-    public Date getCreate() {
-        return create;
+    public Long getUploadtime() {
+        return uploadtime;
     }
 
-    public void setCreate(Date create) {
-        this.create = create;
+    public void setUploadtime(Long uploadtime) {
+        this.uploadtime = uploadtime;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
+
+    public Long getType() {
+        return type;
+    }
+
+    public void setType(Long type) {
+        this.type = type;
+    }
+
+    public Byte getDisable() {
+        return disable;
+    }
+
+    public void setDisable(Byte disable) {
+        this.disable = disable;
+    }
+
+    public Long getClicked() {
+        return clicked;
+    }
+
+    public void setClicked(Long clicked) {
+        this.clicked = clicked;
     }
 }

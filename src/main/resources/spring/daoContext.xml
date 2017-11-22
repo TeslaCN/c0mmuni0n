@@ -4,14 +4,44 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="jdbcUrl" value="jdbc:mysql://localhost/hollow"/>
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="user" value="maven"/>
-        <property name="password" value="sudo reboot"/>
+        <property name="jdbcUrl" value="#{properties['jdbc.url']}"/>
+        <property name="driverClass" value="#{properties['jdbc.driver']}"/>
+        <property name="user" value="#{properties['jdbc.user']}"/>
+        <property name="password" value="#{properties['jdbc.password']}"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="usersMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="ltd.scau.c0mmuni0n.dao.mybatis.mapper.UsersMapper"/>
+    </bean>
+
+    <bean id="authoritiesMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="ltd.scau.c0mmuni0n.dao.mybatis.mapper.AuthoritiesMapper"/>
+    </bean>
+
+    <bean id="resourceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="ltd.scau.c0mmuni0n.dao.mybatis.mapper.ResourceMapper"/>
+    </bean>
+
+    <bean id="typeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="ltd.scau.c0mmuni0n.dao.mybatis.mapper.TypeMapper"/>
+    </bean>
+
+    <bean id="keywordMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="ltd.scau.c0mmuni0n.dao.mybatis.mapper.KeywordMapper"/>
+    </bean>
+
+    <bean id="resourceKeywordMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="mapperInterface" value="ltd.scau.c0mmuni0n.dao.mybatis.mapper.ResourceKeywordMapper"/>
     </bean>
 
 </beans>

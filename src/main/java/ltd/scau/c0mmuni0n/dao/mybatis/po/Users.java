@@ -7,6 +7,8 @@ public class Users {
 
     private Boolean enabled;
 
+    private String nickname;
+
     public String getUsername() {
         return username;
     }
@@ -29,5 +31,13 @@ public class Users {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
     }
 }

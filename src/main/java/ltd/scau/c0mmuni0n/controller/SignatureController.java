@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,11 +45,26 @@ public class SignatureController {
     @Autowired
     private OSSClient ossClient;
 
-    @RequestMapping("/signature")
+    @Autowired
+    private Gson gson;
+
+    /**
+     * 服务端签名，前端直传OSS
+     *
+     * @param response
+     * @return JSON格式的签名信息
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping(value = "/signature", produces = "application/json; charset=utf-8")
     @ResponseBody
     public String signature(HttpServletResponse response) throws UnsupportedEncodingException {
-
-        String dir = "test/";
+        SecurityContextImpl securityContextImpl = (SecurityContextImpl) request
+                .getSession().getAttribute("SPRING_SECURITY_CONTEXT");
+        String dir = securityContextImpl.getAuthentication().getName();
+        if (!dir.endsWith("/")) {
+            dir += "/";
+        }
+        dir += System.currentTimeMillis() + "/";
 
         String host = String.format("https://%s.%s", bucket, endPoint);
 
@@ -74,7 +90,6 @@ public class SignatureController {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST");
 
-        Gson gson = new Gson();
         return gson.toJson(result);
     }
 }

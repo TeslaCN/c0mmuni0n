@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.scau.c0mmuni0n.dao.mybatis.mapper.ResourceKeywordMapper">
+  <resultMap id="BaseResultMap" type="ltd.scau.c0mmuni0n.dao.mybatis.po.ResourceKeyword">
+    <result column="r_id" jdbcType="BIGINT" property="rId" />
+    <result column="k_id" jdbcType="BIGINT" property="kId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    r_id, k_id
+  </sql>
+  <select id="selectByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.ResourceKeywordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from resource_keyword
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.ResourceKeywordExample">
+    delete from resource_keyword
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.ResourceKeyword">
+    insert into resource_keyword (r_id, k_id)
+    values (#{rId,jdbcType=BIGINT}, #{kId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.ResourceKeyword">
+    insert into resource_keyword
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rId != null">
+        r_id,
+      </if>
+      <if test="kId != null">
+        k_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rId != null">
+        #{rId,jdbcType=BIGINT},
+      </if>
+      <if test="kId != null">
+        #{kId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.ResourceKeywordExample" resultType="java.lang.Long">
+    select count(*) from resource_keyword
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update resource_keyword
+    <set>
+      <if test="record.rId != null">
+        r_id = #{record.rId,jdbcType=BIGINT},
+      </if>
+      <if test="record.kId != null">
+        k_id = #{record.kId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update resource_keyword
+    set r_id = #{record.rId,jdbcType=BIGINT},
+      k_id = #{record.kId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

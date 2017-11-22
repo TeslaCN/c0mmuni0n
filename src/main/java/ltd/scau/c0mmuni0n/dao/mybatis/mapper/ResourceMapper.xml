@@ -2,10 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ltd.scau.c0mmuni0n.dao.mybatis.mapper.ResourceMapper">
   <resultMap id="BaseResultMap" type="ltd.scau.c0mmuni0n.dao.mybatis.po.Resource">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="create" jdbcType="TIMESTAMP" property="create" />
+    <result column="uploadTime" jdbcType="BIGINT" property="uploadtime" />
+    <result column="size" jdbcType="BIGINT" property="size" />
+    <result column="type" jdbcType="BIGINT" property="type" />
+    <result column="disable" jdbcType="TINYINT" property="disable" />
+    <result column="clicked" jdbcType="BIGINT" property="clicked" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, path, username, create
+    id, path, name, username, uploadTime, size, type, disable, clicked
   </sql>
   <select id="selectByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.ResourceExample" resultMap="BaseResultMap">
     select
@@ -82,15 +87,21 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from resource
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="findByPage" parameterType="int" resultMap="BaseResultMap">
+    select *
+    from resource
+    order by uploadTime
+    limit #{arg0}, #{arg1}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from resource
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.ResourceExample">
     delete from resource
@@ -98,13 +109,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Resource">
-    insert into resource (id, path, username, 
-      create)
-    values (#{id,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
-      #{create,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Resource" keyProperty="id" useGeneratedKeys="true">
+    insert into resource (id, path, name, 
+      username, uploadTime, size, 
+      type, disable, clicked
+      )
+    values (#{id,jdbcType=BIGINT}, #{path,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{uploadtime,jdbcType=BIGINT}, #{size,jdbcType=BIGINT}, 
+      #{type,jdbcType=BIGINT}, #{disable,jdbcType=TINYINT}, #{clicked,jdbcType=BIGINT}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Resource">
+  <insert id="insertSelective" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Resource" useGeneratedKeys="true" keyProperty="id">
     insert into resource
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -113,25 +128,55 @@
       <if test="path != null">
         path,
       </if>
+      <if test="name != null">
+        name,
+      </if>
       <if test="username != null">
         username,
       </if>
-      <if test="create != null">
-        create,
+      <if test="uploadtime != null">
+        uploadTime,
+      </if>
+      <if test="size != null">
+        size,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="disable != null">
+        disable,
+      </if>
+      <if test="clicked != null">
+        clicked,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="path != null">
         #{path,jdbcType=VARCHAR},
       </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
-      <if test="create != null">
-        #{create,jdbcType=TIMESTAMP},
+      <if test="uploadtime != null">
+        #{uploadtime,jdbcType=BIGINT},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=BIGINT},
+      </if>
+      <if test="disable != null">
+        #{disable,jdbcType=TINYINT},
+      </if>
+      <if test="clicked != null">
+        #{clicked,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -145,16 +190,31 @@
     update resource
     <set>
       <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.path != null">
         path = #{record.path,jdbcType=VARCHAR},
       </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
       <if test="record.username != null">
         username = #{record.username,jdbcType=VARCHAR},
       </if>
-      <if test="record.create != null">
-        create = #{record.create,jdbcType=TIMESTAMP},
+      <if test="record.uploadtime != null">
+        uploadTime = #{record.uploadtime,jdbcType=BIGINT},
+      </if>
+      <if test="record.size != null">
+        size = #{record.size,jdbcType=BIGINT},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=BIGINT},
+      </if>
+      <if test="record.disable != null">
+        disable = #{record.disable,jdbcType=TINYINT},
+      </if>
+      <if test="record.clicked != null">
+        clicked = #{record.clicked,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -163,10 +223,15 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update resource
-    set id = #{record.id,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=BIGINT},
       path = #{record.path,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
       username = #{record.username,jdbcType=VARCHAR},
-      create = #{record.create,jdbcType=TIMESTAMP}
+      uploadTime = #{record.uploadtime,jdbcType=BIGINT},
+      size = #{record.size,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=BIGINT},
+      disable = #{record.disable,jdbcType=TINYINT},
+      clicked = #{record.clicked,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -177,20 +242,40 @@
       <if test="path != null">
         path = #{path,jdbcType=VARCHAR},
       </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="create != null">
-        create = #{create,jdbcType=TIMESTAMP},
+      <if test="uploadtime != null">
+        uploadTime = #{uploadtime,jdbcType=BIGINT},
+      </if>
+      <if test="size != null">
+        size = #{size,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=BIGINT},
+      </if>
+      <if test="disable != null">
+        disable = #{disable,jdbcType=TINYINT},
+      </if>
+      <if test="clicked != null">
+        clicked = #{clicked,jdbcType=BIGINT},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="ltd.scau.c0mmuni0n.dao.mybatis.po.Resource">
     update resource
     set path = #{path,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
-      create = #{create,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+      uploadTime = #{uploadtime,jdbcType=BIGINT},
+      size = #{size,jdbcType=BIGINT},
+      type = #{type,jdbcType=BIGINT},
+      disable = #{disable,jdbcType=TINYINT},
+      clicked = #{clicked,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

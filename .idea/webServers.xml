@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="e13a514e-0f43-434e-85d4-a3694980ac02" name="ECS" url="http://scau.ltd">
+        <fileTransfer host="scau.ltd" port="22" rootFolder="/home/tesla/apache-tomcat-8.5.16/webapps" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

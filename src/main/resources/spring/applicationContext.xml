@@ -10,6 +10,7 @@
         <property name="locations">
             <list>
                 <value>classpath:aliyun-oss.properties</value>
+                <value>classpath:database.properties</value>
             </list>
         </property>
     </bean>
@@ -19,5 +20,7 @@
         <constructor-arg type="java.lang.String" value="#{properties.accessId}"/>
         <constructor-arg type="java.lang.String" value="#{properties.accessKey}"/>
     </bean>
+
+    <bean id="gson" class="com.google.gson.Gson" scope="prototype"/>
 
 </beans>
